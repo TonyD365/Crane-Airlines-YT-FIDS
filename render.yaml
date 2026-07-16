@@ -1,0 +1,64 @@
+# Render Blueprint -- https://render.com/docs/blueprint-spec
+#
+# The FIDS is a background worker, not a web service: it exposes no HTTP port
+# and must never be scaled to more than one instance (two instances would push
+# two video streams into the same YouTube ingest).
+services:
+  - type: worker
+    name: crane-airlines-yt-fids
+    runtime: docker
+    plan: starter
+    region: oregon
+    dockerfilePath: ./Dockerfile
+    autoDeploy: true
+    numInstances: 1
+    envVars:
+      # ---- required, set in the Render dashboard, never in git ----
+      - key: RTMP_URL
+        sync: false # e.g. rtmp://a.rtmp.youtube.com/live2/<stream-key>
+
+      # ---- board identity ----
+      - key: AIRPORT_NAME
+        value: CRANE INTERNATIONAL AIRPORT
+      - key: AIRLINE_NAME
+        value: CRANE AIRLINES
+      - key: BOARD_TITLE
+        value: DEPARTURES
+      - key: TIMEZONE_LABEL
+        value: LOCAL TIME
+      - key: TZ
+        value: America/Toronto
+
+      # ---- video signal ----
+      # 1280x720@25 is the sweet spot for a Starter instance (0.5 CPU).
+      # Move to 1920x1080@30 only on a larger plan.
+      - key: WIDTH
+        value: "1280"
+      - key: HEIGHT
+        value: "720"
+      - key: FPS
+        value: "25"
+      - key: VIDEO_BITRATE
+        value: 2500k
+      - key: VIDEO_MAXRATE
+        value: 2500k
+      - key: VIDEO_BUFSIZE
+        value: 5000k
+      - key: FFMPEG_PRESET
+        value: veryfast
+      - key: GOP_SECONDS
+        value: "2"
+
+      # ---- board behaviour ----
+      - key: ROWS_PER_PAGE
+        value: "10"
+      - key: PAGE_SECONDS
+        value: "15"
+      - key: FLIGHT_REFRESH_SECONDS
+        value: "30"
+
+      # ---- diagnostics ----
+      - key: LOG_LEVEL
+        value: INFO
+      - key: FFMPEG_LOGLEVEL
+        value: warning

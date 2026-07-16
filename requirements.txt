@@ -1,0 +1,3 @@
+# Runtime dependencies.
+# Pillow is the only hard requirement: FFmpeg is a system binary (see Dockerfile).
+pillow==11.3.0

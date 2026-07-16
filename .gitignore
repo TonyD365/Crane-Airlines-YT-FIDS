@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+*.flv
+*.mp4
+preview*.png
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
