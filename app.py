@@ -92,4 +92,21 @@ def main(argv: list[str] | None = None) -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    from flask import Flask
+    import threading
+
+    app = Flask(__name__)
+
+    @app.get("/")
+    def health():
+        return "OK"
+    
+    threading.Thread(
+        target=main,
+        daemon=True
+    ).start()
+
+    app.run(
+        host="0.0.0.0",
+        port=int(os.environ["PORT"])
+    )
