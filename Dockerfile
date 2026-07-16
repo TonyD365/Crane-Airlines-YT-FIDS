@@ -33,7 +33,7 @@ WORKDIR /app
 
 # Dependencies first: this layer is cached across code changes.
 COPY requirements.txt ./
-RUN pip install --require-hashes=false -r requirements.txt
+RUN pip install -r requirements.txt
 
 COPY app.py ./
 COPY crane_fids ./crane_fids
