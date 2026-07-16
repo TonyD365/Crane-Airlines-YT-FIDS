@@ -1,8 +1,4 @@
 # syntax=docker/dockerfile:1
-#
-# Crane Airlines YouTube FIDS
-# Single-stage image: the runtime needs FFmpeg and fonts anyway, so a builder
-# stage would only add complexity without shrinking the result.
 
 FROM python:3.12-slim
 
@@ -16,12 +12,9 @@ ENV PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1
 
-# ffmpeg           -> the encoder / RTMP publisher
-# fonts-dejavu-core, fonts-liberation -> board typography
-# fontconfig       -> font lookup for the registry
-# tini             -> PID 1 that reaps FFmpeg and forwards SIGTERM
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
+        git \
         ffmpeg \
         fontconfig \
         fonts-dejavu-core \
@@ -30,18 +23,21 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-RUN git clone https://github.com/TonyD365/Crane-Airlines-YT-FIDS.git
-# Dependencies first: this layer is cached across code changes.
-COPY requirements.txt ./
+
+# 可修改仓库及分支
+ARG GIT_REPO=https://github.com/TonyD365/Crane-Airlines-YT-FIDS.git
+ARG GIT_BRANCH=main
+
+# Clone 最新代码
+RUN git clone --depth=1 --branch ${GIT_BRANCH} ${GIT_REPO} .
+
+# 安装 Python 依赖
 RUN pip install -r requirements.txt
 
-COPY app.py ./
-COPY crane_fids ./crane_fids
-COPY assets ./assets
-
-# Run unprivileged: nothing here needs root.
+# 创建普通用户
 RUN useradd --create-home --uid 10001 fids \
     && chown -R fids:fids /app
+
 USER fids
 
 ENV WIDTH=1920 \
@@ -51,9 +47,9 @@ ENV WIDTH=1920 \
     AIRPORT_NAME="CRANE INTERNATIONAL AIRPORT" \
     FONT_DIR=/app/assets/fonts
 
-# Liveness: the renderer must be able to compose a frame.
 HEALTHCHECK --interval=5m --timeout=30s --start-period=30s --retries=3 \
-    CMD python -c "import sys; from crane_fids.config import Config; from crane_fids.renderer import FidsRenderer; sys.exit(0 if FidsRenderer.from_config(Config.from_env()) else 1)"
+CMD python -c "import sys; from crane_fids.config import Config; from crane_fids.renderer import FidsRenderer; sys.exit(0 if FidsRenderer.from_config(Config.from_env()) else 1)"
 
 ENTRYPOINT ["/usr/bin/tini", "--"]
+
 CMD ["python", "app.py"]
