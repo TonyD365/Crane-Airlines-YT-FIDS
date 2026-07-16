@@ -30,7 +30,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-
+RUN git clone https://github.com/TonyD365/Crane-Airlines-YT-FIDS.git
 # Dependencies first: this layer is cached across code changes.
 COPY requirements.txt ./
 RUN pip install -r requirements.txt
