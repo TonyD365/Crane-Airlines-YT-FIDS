@@ -12,15 +12,21 @@ ENV PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1
 
-RUN apt-get update \
-    && apt-get install --no-install-recommends -y \
-        git \
+RUN rm -f /etc/apt/sources.list.d/* && \
+    printf "deb http://ftp.us.debian.org/debian bookworm main\n\
+deb http://ftp.us.debian.org/debian bookworm-updates main\n\
+deb http://security.debian.org/debian-security bookworm-security main\n" > /etc/apt/sources.list && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
         ffmpeg \
         fontconfig \
         fonts-dejavu-core \
         fonts-liberation \
         tini \
-    && rm -rf /var/lib/apt/lists/*
+        git && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
