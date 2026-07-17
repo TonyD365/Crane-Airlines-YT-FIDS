@@ -27,29 +27,31 @@ Quick Start
 
 **3. Control flights from external Python code:**
 
-    import app
     from crane_fids import Flight, FlightStatus
     from datetime import datetime, timezone
 
     # Add a flight
-    app.provider.add_flight(
+    crane_fids.add_flight(
         Flight("CR999", "DUBAI", datetime.now(timezone.utc), "F01", FlightStatus.ON_TIME)
     )
 
     # Update a flight
-    app.provider.update_flight("CR999", status=FlightStatus.BOARDING, gate="F02")
+    crane_fids.update_flight("CR999", status=FlightStatus.BOARDING, gate="F02")
 
     # Remove a flight
-    app.provider.remove_flight("CR999")
+    crane_fids.remove_flight("CR999")
 
     # Replace all flights
-    app.provider.set_flights([...])
+    crane_fids.set_flights([...])
 
     # Clear all flights
-    app.provider.clear()
+    crane_fids.clear()
 
     # Query a flight
-    flight = app.provider.get_flight("CR101")
+    flight = crane_fids.get_flight("CR101")
+
+    # Get flight count
+    count = crane_fids.get_flight_count()
 
 **4. Use your own provider:**
 
@@ -75,6 +77,11 @@ objects, pass timezone-aware ``datetime`` objects in UTC, or naive datetimes
 Public API
 ----------
 
+Convenience Functions
+    ``add_flight()``, ``update_flight()``, ``remove_flight()``, ``get_flight()``,
+    ``set_flights()``, ``clear()``, ``get_flight_count()`` -- control the global
+    flight provider from external code.
+
 DynamicFlightProvider
     Thread-safe flight provider with full CRUD operations.
 
@@ -99,6 +106,53 @@ __all__ = [
     "Flight",
     "FlightStatus",
     "BoardKind",
+    "add_flight",
+    "update_flight",
+    "remove_flight",
+    "get_flight",
+    "set_flights",
+    "clear",
+    "get_flight_count",
 ]
 
 __version__ = "1.0.0"
+
+# ------------------------------------------------------------------ #
+# Global flight provider (shared with app.py)
+# ------------------------------------------------------------------ #
+_provider = DynamicFlightProvider()
+
+
+def add_flight(flight: Flight) -> None:
+    """Add a flight to the global provider."""
+    _provider.add_flight(flight)
+
+
+def update_flight(flight_number: str, **updates) -> Flight | None:
+    """Update a flight in the global provider."""
+    return _provider.update_flight(flight_number, **updates)
+
+
+def remove_flight(flight_number: str) -> Flight | None:
+    """Remove a flight from the global provider."""
+    return _provider.remove_flight(flight_number)
+
+
+def get_flight(flight_number: str) -> Flight | None:
+    """Get a flight from the global provider."""
+    return _provider.get_flight(flight_number)
+
+
+def set_flights(flights: list[Flight]) -> None:
+    """Replace all flights in the global provider."""
+    _provider.set_flights(flights)
+
+
+def clear() -> None:
+    """Clear all flights from the global provider."""
+    _provider.clear()
+
+
+def get_flight_count() -> int:
+    """Get the number of flights in the global provider."""
+    return _provider.flight_count

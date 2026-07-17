@@ -26,7 +26,8 @@ import logging
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-from crane_fids import __version__, BoardKind, DynamicFlightProvider, Flight, FlightStatus
+import crane_fids
+from crane_fids import __version__, BoardKind, Flight, FlightStatus
 from crane_fids.application import build_application
 from crane_fids.config import Config, ConfigError
 from crane_fids.logging_setup import configure_logging
@@ -61,10 +62,10 @@ def _default_flights() -> list[Flight]:
 
 
 # ------------------------------------------------------------------ #
-# Global provider reference (importable by external code)
+# Use the global provider from crane_fids module
 # ------------------------------------------------------------------ #
-provider: DynamicFlightProvider = DynamicFlightProvider()
-provider.set_flights(_default_flights())
+provider = crane_fids._provider
+crane_fids.set_flights(_default_flights())
 
 
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
