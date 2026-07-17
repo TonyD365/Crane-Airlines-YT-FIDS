@@ -8,6 +8,8 @@ object graph and hands control to :class:`crane_fids.application.Application`.
 """
 
 from __future__ import annotations
+from dotenv import load_dotenv
+
 
 import argparse
 import logging
@@ -26,19 +28,7 @@ from crane_fids.renderer import FidsRenderer, FrameContext
 
 _LOG = logging.getLogger("crane_fids.app")
 
-def _load_env_file():
-    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
-    try:
-        with open(path, "r", encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
-                if not line or line.startswith("#") or "=" not in line:
-                    continue
-                key, _, val = line.partition("=")
-                os.environ.setdefault(key.strip(), val.strip().strip('"').strip("'"))
-        print("📄 Loaded environment variables from .env")
-    except FileNotFoundError:
-        pass
+load_dotenv()
 
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
