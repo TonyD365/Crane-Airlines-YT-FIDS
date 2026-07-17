@@ -93,6 +93,51 @@ FlightStatus
 
 BoardKind
     DEPARTURES or ARRIVALS.
+
+Examples
+--------
+
+**Complete example of managing flights from external code:**
+
+    >>> import crane_fids
+    >>> from crane_fids import Flight, FlightStatus
+    >>> from datetime import datetime, timezone
+    >>>
+    >>> # Add a new flight
+    >>> crane_fids.add_flight(
+    ...     Flight("CR999", "DUBAI", datetime(2025, 7, 17, 14, 30, tzinfo=timezone.utc),
+    ...            "F01", FlightStatus.ON_TIME, departure="DUBAI")
+    ... )
+    >>> crane_fids.get_flight_count()
+    1
+    >>>
+    >>> # Update the flight status
+    >>> crane_fids.update_flight("CR999", status=FlightStatus.BOARDING, gate="F02")
+    >>> flight = crane_fids.get_flight("CR999")
+    >>> flight.status.label
+    'BOARDING'
+    >>> flight.gate
+    'F02'
+    >>>
+    >>> # Remove the flight
+    >>> crane_fids.remove_flight("CR999")
+    >>> crane_fids.get_flight_count()
+    0
+    >>>
+    >>> # Batch replace all flights
+    >>> crane_fids.set_flights([
+    ...     Flight("CR101", "NEW YORK", datetime(2025, 7, 17, 15, 0, tzinfo=timezone.utc),
+    ...            "A12", FlightStatus.ON_TIME, departure="NEWARK"),
+    ...     Flight("CR102", "CHICAGO", datetime(2025, 7, 17, 16, 0, tzinfo=timezone.utc),
+    ...            "B08", FlightStatus.GATE_OPEN, departure="CHICAGO"),
+    ... ])
+    >>> crane_fids.get_flight_count()
+    2
+    >>>
+    >>> # Clear all flights
+    >>> crane_fids.clear()
+    >>> crane_fids.get_flight_count()
+    0
 """
 
 from __future__ import annotations
