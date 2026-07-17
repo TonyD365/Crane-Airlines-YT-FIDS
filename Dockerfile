@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM python:3.12-slim
+FROM python:3.12-slim-bookworm
 
 LABEL org.opencontainers.image.title="Crane-Airlines-YT-FIDS" \
       org.opencontainers.image.description="Airport style FIDS rendered with Pillow and streamed to YouTube via FFmpeg" \
