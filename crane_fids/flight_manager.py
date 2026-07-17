@@ -57,7 +57,7 @@ class ScheduleEntry:
 # Base timetable.  Times are relative, so the board always looks "live"
 # regardless of when the container is started.
 _DEFAULT_SCHEDULE: tuple[ScheduleEntry, ...] = (
-    ScheduleEntry("CR101", "NEW YORK", "A12", 0),
+    ScheduleEntry("CR104", "NEW YORK", "A12", 0),
     ScheduleEntry("CR102", "CHICAGO", "B08", 12),
     ScheduleEntry("CR103", "TORONTO", "C11", 24),
     ScheduleEntry("CR201", "VANCOUVER", "D09", 36),

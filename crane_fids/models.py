@@ -81,7 +81,8 @@ class Flight:
 
     Attributes:
         flight_number: IATA-like designator, e.g. ``"CR101"``.
-        destination: City name shown in the DESTINATION column.
+        destination: Destination city name shown in the DESTINATION column.
+        departure: Departure city name shown in the DEPARTURE column.
         scheduled: Scheduled time of departure (timezone aware or naive local).
         gate: Gate identifier, e.g. ``"A12"``.
         status: Current :class:`FlightStatus`.
@@ -94,6 +95,7 @@ class Flight:
     scheduled: datetime
     gate: str
     status: FlightStatus
+    departure: str = ""
     remark: str = ""
     board: BoardKind = BoardKind.DEPARTURES
 
@@ -125,6 +127,7 @@ class Flight:
             scheduled=self.scheduled,
             gate=self.gate,
             status=status,
+            departure=self.departure,
             remark=remark or self.remark,
             board=self.board,
         )

@@ -186,7 +186,7 @@ class ChromeLayer(Layer):
 
 
 class HeaderLayer(Layer):
-    """Airline name, airport name and board title."""
+    """Airline name and board title."""
 
     is_static = True
 
@@ -195,7 +195,6 @@ class HeaderLayer(Layer):
         centre_y = layout.header_height // 2
 
         airline_font = self._fonts.bold(layout.airline_font_size)
-        subtitle_font = self._fonts.regular(layout.subtitle_font_size)
         title_font = self._fonts.bold(layout.board_title_font_size)
 
         # Yellow accent block in front of the airline name: a cheap, very
@@ -210,17 +209,10 @@ class HeaderLayer(Layer):
 
         text_x = layout.margin + block_width + int(layout.width * 0.012)
         draw.text(
-            (text_x, centre_y - int(layout.header_height * 0.10)),
+            (text_x, centre_y),
             ctx.airline_name.upper(),
             font=airline_font,
             fill=theme.header_text,
-            anchor="lm",
-        )
-        draw.text(
-            (text_x, centre_y + int(layout.header_height * 0.24)),
-            ctx.airport_name.upper(),
-            font=subtitle_font,
-            fill=theme.muted_text,
             anchor="lm",
         )
         draw.text(
@@ -233,7 +225,7 @@ class HeaderLayer(Layer):
 
 
 class ColumnHeaderLayer(Layer):
-    """The ``TIME  FLIGHT  DESTINATION  GATE  STATUS`` strip."""
+    """The ``TIME  FLIGHT  DESTINATION  DEPARTURE  GATE  STATUS`` strip."""
 
     is_static = True
 
@@ -335,6 +327,7 @@ class FlightTableLayer(CachedRegionLayer):
                 flight.flight_number,
                 flight.scheduled_label,
                 flight.destination,
+                flight.departure,
                 flight.gate,
                 flight.status,
                 flight.remark,
@@ -368,6 +361,7 @@ class FlightTableLayer(CachedRegionLayer):
             "time": (flight.scheduled_label, theme.primary_text),
             "flight": (flight.flight_number, theme.highlight_text),
             "destination": (flight.destination.upper(), theme.primary_text),
+            "departure": (flight.departure.upper(), theme.primary_text),
             "gate": (flight.gate, theme.primary_text),
             "status": (flight.status.label, flight.status.colour),
         }

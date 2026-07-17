@@ -22,7 +22,8 @@ from datetime import datetime
 from types import FrameType
 
 from .config import Config
-from .flight_manager import FlightManager, RandomisedStaticFlightProvider
+from .dynamic_provider import DynamicFlightProvider
+from .flight_manager import FlightManager
 from .models import BoardKind
 from .renderer import FidsRenderer, FrameContext
 from .stream_engine import (
@@ -83,11 +84,13 @@ class Application:
         flight_manager: FlightManager,
         renderer: FidsRenderer,
         engine: StreamEngine,
+        provider: DynamicFlightProvider | None = None,
     ) -> None:
         self._config = config
         self._flights = flight_manager
         self._renderer = renderer
         self._engine = engine
+        self._provider = provider
         self._stop = threading.Event()
         self._stats = LoopStats()
         self._frame_index = 0
@@ -95,6 +98,16 @@ class Application:
     # ------------------------------------------------------------------ #
     # Lifecycle
     # ------------------------------------------------------------------ #
+    @property
+    def provider(self) -> DynamicFlightProvider | None:
+        """The flight provider, if it is a :class:`DynamicFlightProvider`.
+
+        External code can use this to update flights at runtime::
+
+            app.provider.set_flights([...])
+        """
+        return self._provider
+
     def install_signal_handlers(self) -> None:
         """Translate SIGINT/SIGTERM into a clean loop shutdown."""
         for sig in (signal.SIGINT, signal.SIGTERM):
@@ -222,9 +235,20 @@ class Application:
         self.request_stop()
 
 
-def build_application(config: Config) -> Application:
-    """Composition root: build the object graph described by ``config``."""
-    provider = RandomisedStaticFlightProvider()
+def build_application(
+    config: Config,
+    provider: DynamicFlightProvider | None = None,
+) -> Application:
+    """Composition root: build the object graph described by ``config``.
+
+    Args:
+        config: Application configuration.
+        provider: Optional flight provider.  If omitted, a fresh
+            :class:`DynamicFlightProvider` is created.  Pass your own
+            instance when you need to update flights from external code.
+    """
+    if provider is None:
+        provider = DynamicFlightProvider()
     flight_manager = FlightManager(
         provider,
         refresh_seconds=config.flight_refresh_seconds,
@@ -236,4 +260,4 @@ def build_application(config: Config) -> Application:
         if config.stream.enabled
         else NullStreamEngine()
     )
-    return Application(config, flight_manager, renderer, engine)
+    return Application(config, flight_manager, renderer, engine, provider=provider)

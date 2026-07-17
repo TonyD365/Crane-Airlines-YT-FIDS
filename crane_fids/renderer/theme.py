@@ -61,11 +61,12 @@ class Column:
 
 
 _DEFAULT_COLUMNS: Final[tuple[Column, ...]] = (
-    Column("time", "TIME", 0.031, 0.115, "left"),
-    Column("flight", "FLIGHT", 0.156, 0.130, "left"),
-    Column("destination", "DESTINATION", 0.297, 0.331, "left"),
-    Column("gate", "GATE", 0.641, 0.109, "center"),
-    Column("status", "STATUS", 0.760, 0.209, "right"),
+    Column("time", "TIME", 0.031, 0.100, "left"),
+    Column("flight", "FLIGHT", 0.141, 0.115, "left"),
+    Column("destination", "DESTINATION", 0.266, 0.200, "left"),
+    Column("departure", "DEPARTURE", 0.476, 0.200, "left"),
+    Column("gate", "GATE", 0.686, 0.094, "center"),
+    Column("status", "STATUS", 0.790, 0.180, "right"),
 )
 
 

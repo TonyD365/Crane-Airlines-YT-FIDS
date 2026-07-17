@@ -12,10 +12,20 @@ The package is intentionally split into independent, highly cohesive modules:
 * :mod:`crane_fids.renderer`       -- Pillow based frame composition
 * :mod:`crane_fids.stream_engine`  -- FFmpeg process supervision
 * :mod:`crane_fids.application`    -- orchestration / main loop
+* :mod:`crane_fids.dynamic_provider` -- runtime-updatable flight provider
 """
 
 from __future__ import annotations
 
-__all__ = ["__version__"]
+from .dynamic_provider import DynamicFlightProvider
+from .models import BoardKind, Flight, FlightStatus
+
+__all__ = [
+    "__version__",
+    "DynamicFlightProvider",
+    "Flight",
+    "FlightStatus",
+    "BoardKind",
+]
 
 __version__ = "1.0.0"
