@@ -18,7 +18,7 @@ import signal
 import threading
 import time
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from types import FrameType
 
 from .config import Config
@@ -185,7 +185,7 @@ class Application:
         self._sleep_until_next_frame(started_at, interval)
 
     def _render_frame(self) -> bytes:
-        now = datetime.now()
+        now = datetime.now(timezone.utc)
         flights = self._flights.current_flights(now)
         ctx = FrameContext(
             now=now,

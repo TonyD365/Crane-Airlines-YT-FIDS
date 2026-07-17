@@ -23,7 +23,7 @@ from dotenv import load_dotenv
 
 import argparse
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from crane_fids import __version__, BoardKind, DynamicFlightProvider, Flight, FlightStatus
@@ -41,7 +41,7 @@ load_dotenv()
 # ------------------------------------------------------------------ #
 def _default_flights() -> list[Flight]:
     """Return a handful of example flights for the current time."""
-    now = datetime.now().replace(second=0, microsecond=0)
+    now = datetime.now(timezone.utc).replace(second=0, microsecond=0)
     base = now + timedelta(minutes=5)  # first flight 5 minutes from now
     return [
         Flight("CR101", "NEW YORK",     base,                          "A12", FlightStatus.ON_TIME,     departure="NEWARK"),
@@ -91,7 +91,7 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 def _run_preview(config: Config, path: Path, seconds: float) -> int:
     """Render a single frame to disk: the fastest way to review a layout."""
-    now = datetime.now()
+    now = datetime.now(timezone.utc)
     flights = tuple(provider.fetch(now, BoardKind.DEPARTURES))
     renderer = FidsRenderer.from_config(config)
     ctx = FrameContext(

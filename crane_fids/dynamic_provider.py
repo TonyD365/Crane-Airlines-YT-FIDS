@@ -56,11 +56,87 @@ class DynamicFlightProvider:
             self._flights = sorted_flights
         _LOG.info("DynamicFlightProvider: updated to %d flights", len(sorted_flights))
 
+    def add_flight(self, flight: Flight) -> None:
+        """Add a single flight to the list.
+
+        Args:
+            flight: The flight to add.  The list is re-sorted after insertion.
+        """
+        with self._lock:
+            self._flights = tuple(sorted(self._flights + (flight,), key=lambda f: f.sort_key))
+        _LOG.info("DynamicFlightProvider: added flight %s", flight.flight_number)
+
+    def update_flight(self, flight_number: str, **updates) -> Flight | None:
+        """Update a flight by flight number.
+
+        Args:
+            flight_number: The flight number to update (e.g. ``"CR101"``).
+            **updates: Fields to update.  Supported: ``destination``, ``scheduled``,
+                ``gate``, ``status``, ``departure``, ``remark``.
+
+        Returns:
+            The updated flight, or ``None`` if not found.
+        """
+        with self._lock:
+            for i, flight in enumerate(self._flights):
+                if flight.flight_number.upper() == flight_number.upper():
+                    new_flight = Flight(
+                        flight_number=flight.flight_number,
+                        destination=updates.get("destination", flight.destination),
+                        scheduled=updates.get("scheduled", flight.scheduled),
+                        gate=updates.get("gate", flight.gate),
+                        status=updates.get("status", flight.status),
+                        departure=updates.get("departure", flight.departure),
+                        remark=updates.get("remark", flight.remark),
+                        board=flight.board,
+                    )
+                    self._flights = tuple(sorted(
+                        self._flights[:i] + (new_flight,) + self._flights[i + 1:],
+                        key=lambda f: f.sort_key,
+                    ))
+                    _LOG.info("DynamicFlightProvider: updated flight %s", flight_number)
+                    return new_flight
+        _LOG.warning("DynamicFlightProvider: flight %s not found", flight_number)
+        return None
+
+    def remove_flight(self, flight_number: str) -> Flight | None:
+        """Remove a flight by flight number.
+
+        Args:
+            flight_number: The flight number to remove.
+
+        Returns:
+            The removed flight, or ``None`` if not found.
+        """
+        with self._lock:
+            for i, flight in enumerate(self._flights):
+                if flight.flight_number.upper() == flight_number.upper():
+                    self._flights = self._flights[:i] + self._flights[i + 1:]
+                    _LOG.info("DynamicFlightProvider: removed flight %s", flight_number)
+                    return flight
+        _LOG.warning("DynamicFlightProvider: flight %s not found", flight_number)
+        return None
+
     def clear(self) -> None:
         """Remove all flights."""
         with self._lock:
             self._flights = ()
         _LOG.info("DynamicFlightProvider: cleared all flights")
+
+    def get_flight(self, flight_number: str) -> Flight | None:
+        """Get a flight by flight number.
+
+        Args:
+            flight_number: The flight number to look up.
+
+        Returns:
+            The flight, or ``None`` if not found.
+        """
+        with self._lock:
+            for flight in self._flights:
+                if flight.flight_number.upper() == flight_number.upper():
+                    return flight
+        return None
 
     @property
     def flight_count(self) -> int:

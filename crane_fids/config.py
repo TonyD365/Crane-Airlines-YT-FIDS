@@ -175,8 +175,8 @@ class Config:
 
         default_ticker = (
             f"WELCOME TO {airport_name}  •  CRANE AIRLINES WISHES YOU A PLEASANT FLIGHT  "
-            "•  PLEASE KEEP YOUR BAGGAGE WITH YOU AT ALL TIMES  "
-            "•  BOARDING GATES CLOSE 15 MINUTES BEFORE DEPARTURE  "
+            "·  PLEASE KEEP YOUR BAGGAGE WITH YOU AT ALL TIMES  "
+            "·  BOARDING GATES CLOSE 15 MINUTES BEFORE DEPARTURE  "
         )
 
         return cls(

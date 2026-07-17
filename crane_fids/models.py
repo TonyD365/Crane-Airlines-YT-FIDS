@@ -107,8 +107,13 @@ class Flight:
 
     @property
     def scheduled_label(self) -> str:
-        """Scheduled time formatted for the TIME column (24h, airport style)."""
-        return self.scheduled.strftime("%H:%M")
+        """Scheduled time formatted for the TIME column (24h, UTC)."""
+        # Ensure UTC timezone
+        scheduled = self.scheduled
+        if scheduled.tzinfo is None:
+            from datetime import timezone
+            scheduled = scheduled.replace(tzinfo=timezone.utc)
+        return scheduled.strftime("%H:%M")
 
     @property
     def sort_key(self) -> tuple[datetime, str]:
