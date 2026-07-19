@@ -34,6 +34,8 @@ from crane_fids.application import build_application
 from crane_fids.config import Config, ConfigError
 from crane_fids.logging_setup import configure_logging
 from crane_fids.renderer import FidsRenderer, FrameContext
+from datetime import datetime
+
 
 _LOG = logging.getLogger("crane_fids.app")
 
@@ -109,8 +111,10 @@ def _default_flights() -> list[Flight]:
         Flight("CR715", "SINGAPORE",    base + timedelta(minutes=150), "A12", FlightStatus.ON_TIME,     departure="SINGAPORE"),
         Flight("CR808", "SYDNEY",       base + timedelta(minutes=165), "B08", FlightStatus.CANCELLED,   departure="SYDNEY"),
     """
+    toronto_time_17_00 = datetime(2025, 7, 19, 21, 0, tzinfo=timezone.utc)
+
     return [
-        Flight("CR015", "[YYZ] Toronto Pearson International Airport, Canada",     "20:50",                          "5", FlightStatus.ON_TIME,     departure="[PEK] Beijing Capital International Airport, China"),
+        Flight("CR015", "[YYZ] Toronto Pearson International Airport, Canada",     toronto_time_17_00,                          "5", FlightStatus.ON_TIME,     departure="[PEK] Beijing Capital International Airport, China", board=BoardKind.ARRIVALS),
     ]
 
 
