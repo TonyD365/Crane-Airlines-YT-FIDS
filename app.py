@@ -212,11 +212,11 @@ def index() -> tuple[str, int]:
             const status = document.getElementById('add_status').value;
             const departure = document.getElementById('add_departure').value;
             
-            const response = await fetch('/api/flights', {
+            const response = await fetch('/api/flights', {{
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({flight_number, destination, scheduled, gate, status, departure})
-            });
+                headers: {{'Content-Type': 'application/json'}},
+                body: JSON.stringify({{"flight_number": flight_number, "destination": destination, "scheduled": scheduled, "gate": gate, "status": status, "departure": departure}})
+            }});
             
             if (response.ok) {{
                 alert('Flight added successfully!');
@@ -232,11 +232,11 @@ def index() -> tuple[str, int]:
             const status = document.getElementById('update_status').value;
             const gate = document.getElementById('update_gate').value;
             
-            const response = await fetch(`/api/flights/${flightNumber}`, {
+            const response = await fetch(`/api/flights/${flightNumber}`, {{
                 method: 'PUT',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({status, gate})
-            });
+                headers: {{'Content-Type': 'application/json'}},
+                body: JSON.stringify({{"status": status, "gate": gate}})
+            }});
             
             if (response.ok) {{
                 alert('Flight updated successfully!');
@@ -254,9 +254,9 @@ def index() -> tuple[str, int]:
                 return;
             }}
             
-            const response = await fetch(`/api/flights/${flightNumber}`, {
+            const response = await fetch(`/api/flights/${flightNumber}`, {{
                 method: 'DELETE'
-            });
+            }});
             
             if (response.ok) {{
                 alert('Flight deleted successfully!');
