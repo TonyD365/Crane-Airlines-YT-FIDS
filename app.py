@@ -72,6 +72,7 @@ def index() -> tuple[str, int]:
             <p><strong>Status:</strong> Active</p>
             <p><strong>Port:</strong> 7860</p>
         </div>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/MTs1_U_co2A?si=0hSJF1OR-yx32P-R" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         <div class="footer">
             <p>Crane Airlines Flight Information Display System</p>
         </div>
