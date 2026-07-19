@@ -44,7 +44,7 @@ def _default_flights() -> list[Flight]:
     """Return a handful of example flights for the current time."""
     now = datetime.now(timezone.utc).replace(second=0, microsecond=0)
     base = now + timedelta(minutes=5)  # first flight 5 minutes from now
-    return [
+    """
         Flight("CR101", "NEW YORK",     base,                          "A12", FlightStatus.ON_TIME,     departure="NEWARK"),
         Flight("CR102", "CHICAGO",      base + timedelta(minutes=15),  "B08", FlightStatus.ON_TIME,     departure="CHICAGO"),
         Flight("CR103", "TORONTO",      base + timedelta(minutes=30),  "C11", FlightStatus.GATE_OPEN,   departure="TORONTO"),
@@ -58,6 +58,9 @@ def _default_flights() -> list[Flight]:
         Flight("CR612", "BEIJING",      base + timedelta(minutes=135), "E73", FlightStatus.ON_TIME,     departure="BEIJING"),
         Flight("CR715", "SINGAPORE",    base + timedelta(minutes=150), "A12", FlightStatus.ON_TIME,     departure="SINGAPORE"),
         Flight("CR808", "SYDNEY",       base + timedelta(minutes=165), "B08", FlightStatus.CANCELLED,   departure="SYDNEY"),
+    """
+    return [
+        Flight("CR015", "[YYZ] Toronto Pearson International Airport, Canada",     base,                          "5", FlightStatus.ON_TIME,     departure="[PEK] Beijing Capital International Airport, China"),
     ]
 
 
