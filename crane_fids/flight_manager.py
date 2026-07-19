@@ -90,8 +90,7 @@ _DISRUPTIONS: dict[str, int] = {
 _STATUS_LADDER: tuple[tuple[float, FlightStatus], ...] = (
     (-5.0, FlightStatus.DEPARTED),
     (5.0, FlightStatus.FINAL_CALL),
-    (12.0, FlightStatus.LAST_CALL),
-    (30.0, FlightStatus.BOARDING),
+    (30.0, FlightStatus.EC_BOARDING),
     (45.0, FlightStatus.GATE_OPEN),
 )
 

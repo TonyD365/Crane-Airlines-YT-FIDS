@@ -23,7 +23,7 @@ def _flights(count: int) -> tuple[Flight, ...]:
             destination="NEW YORK",
             scheduled=NOW + timedelta(minutes=10 * index),
             gate="A12",
-            status=FlightStatus.BOARDING if index % 2 else FlightStatus.ON_TIME,
+            status=FlightStatus.EC_BOARDING if index % 2 else FlightStatus.ON_TIME,
         )
         for index in range(count)
     )

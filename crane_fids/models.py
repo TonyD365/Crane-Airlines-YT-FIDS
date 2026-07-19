@@ -34,8 +34,9 @@ class FlightStatus(Enum):
 
     ON_TIME = ("ON TIME", (0, 208, 96), False)
     GATE_OPEN = ("GATE OPEN", (120, 220, 255), False)
-    BOARDING = ("BOARDING", (255, 214, 0), True)
-    LAST_CALL = ("LAST CALL", (255, 138, 0), True)
+    EC_BOARDING = ("ECONOMY CLASS BOARDING", (255, 214, 0), True)
+    BC_BOARDING = ("BC BOARDING", (255, 214, 0), True)
+    FC_BOARDING = ("FC BOARDING", (255, 214, 0), True)
     FINAL_CALL = ("FINAL CALL", (255, 56, 56), True)
     DELAYED = ("DELAYED", (255, 138, 0), False)
     CANCELLED = ("CANCELLED", (255, 56, 56), False)

@@ -57,7 +57,7 @@ class TestConfig:
 
 class TestModels:
     def test_status_presentation(self) -> None:
-        assert FlightStatus.BOARDING.blinking is True
+        assert FlightStatus.EC_BOARDING.blinking is True
         assert FlightStatus.ON_TIME.blinking is False
         assert FlightStatus.from_label("final call") is FlightStatus.FINAL_CALL
 
