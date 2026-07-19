@@ -114,7 +114,7 @@ def _default_flights() -> list[Flight]:
     toronto_time_17_00 = datetime(2025, 7, 19, 21, 0, tzinfo=timezone.utc)
 
     return [
-        Flight("CR015", "[YYZ] Toronto Pearson International Airport, Canada",     toronto_time_17_00,                          "5", FlightStatus.ON_TIME,     departure="[PEK] Beijing Capital International Airport, China"),
+        Flight("CR015", "[YYZ] Toronto Pearson International Airport, Canada",     toronto_time_17_00,                          "5", FlightStatus.DN_BOARDING,     departure="[PEK] Beijing Capital International Airport, China"),
     ]
 
 
