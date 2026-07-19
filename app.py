@@ -110,7 +110,7 @@ def _default_flights() -> list[Flight]:
         Flight("CR808", "SYDNEY",       base + timedelta(minutes=165), "B08", FlightStatus.CANCELLED,   departure="SYDNEY"),
     """
     return [
-        Flight("CR015", "[YYZ] Toronto Pearson International Airport, Canada",     base,                          "5", FlightStatus.EC_BOARDING,     departure="[PEK] Beijing Capital International Airport, China"),
+        Flight("CR015", "[YYZ] Toronto Pearson International Airport, Canada",     "20:50",                          "5", FlightStatus.ON_TIME,     departure="[PEK] Beijing Capital International Airport, China"),
     ]
 
 
