@@ -18,7 +18,7 @@ External code can import this module and update flights at runtime::
 """
 
 from __future__ import annotations
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 
 
 import argparse
@@ -37,7 +37,7 @@ from crane_fids.renderer import FidsRenderer, FrameContext
 
 _LOG = logging.getLogger("crane_fids.app")
 
-load_dotenv()
+#load_dotenv()
 
 # ------------------------------------------------------------------ #
 # Flask HTTP server

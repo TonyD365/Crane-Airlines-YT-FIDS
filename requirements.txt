@@ -3,4 +3,3 @@
 pillow==11.3.0
 python-dotenv
 flask>=2.0.0
-flask
