@@ -97,9 +97,9 @@ def index() -> tuple[str, int]:
         <h2>✈️ Flight Management</h2>
         
         <div class="tabs">
-            <button class="tab active" onclick="showTab(event, 'add')">Add Flight</button>
-            <button class="tab" onclick="showTab(event, 'update')">Update Flight</button>
-            <button class="tab" onclick="showTab(event, 'delete')">Delete Flight</button>
+            <button type="button" class="tab active" onclick="showTab('add')">Add Flight</button>
+            <button type="button" class="tab" onclick="showTab('update')">Update Flight</button>
+            <button type="button" class="tab" onclick="showTab('delete')">Delete Flight</button>
         </div>
         
         <div id="add" class="tab-content active">
@@ -190,12 +190,17 @@ def index() -> tuple[str, int]:
     </div>
 
         <script>
-        function showTab(event, tabName) {{
-            event.preventDefault();
+        function showTab(tabName) {{
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
             document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
             document.getElementById(tabName).classList.add('active');
-            event.target.classList.add('active');
+            // Find the clicked tab button and add active class
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {{
+                if (tab.getAttribute('onclick').includes(tabName)) {{
+                    tab.classList.add('active');
+                }}
+            }});
         }}
         
         async function addFlight(event) {{
