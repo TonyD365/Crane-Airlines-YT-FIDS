@@ -232,7 +232,7 @@ def index() -> tuple[str, int]:
             const status = document.getElementById('update_status').value;
             const gate = document.getElementById('update_gate').value;
             
-            const response = await fetch(`/api/flights/${flightNumber}`, {{
+            const response = await fetch(`/api/flights/$${{flightNumber}}`, {{
                 method: 'PUT',
                 headers: {{'Content-Type': 'application/json'}},
                 body: JSON.stringify({{"status": status, "gate": gate}})
@@ -254,7 +254,7 @@ def index() -> tuple[str, int]:
                 return;
             }}
             
-            const response = await fetch(`/api/flights/${flightNumber}`, {{
+            const response = await fetch(`/api/flights/$${{flightNumber}}`, {{
                 method: 'DELETE'
             }});
             
