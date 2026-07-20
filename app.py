@@ -205,7 +205,7 @@ def index() -> tuple[str, int]:
         
         async function addFlight(event) {{
             event.preventDefault();
-            const flightNumber = document.getElementById('add_flight_number').value;
+            const flight_number = document.getElementById('add_flight_number').value;
             const destination = document.getElementById('add_destination').value;
             const scheduled = document.getElementById('add_scheduled').value;
             const gate = document.getElementById('add_gate').value;
@@ -228,11 +228,11 @@ def index() -> tuple[str, int]:
         
         async function updateFlight(event) {{
             event.preventDefault();
-            const flightNumber = document.getElementById('update_flight_number').value;
+            const flight_number = document.getElementById('update_flight_number').value;
             const status = document.getElementById('update_status').value;
             const gate = document.getElementById('update_gate').value;
             
-            const response = await fetch(`/api/flights/$${{flightNumber}}`, {{
+            const response = await fetch(`/api/flights/$${{flight_number}}`, {{
                 method: 'PUT',
                 headers: {{'Content-Type': 'application/json'}},
                 body: JSON.stringify({{"status": status, "gate": gate}})
@@ -248,13 +248,13 @@ def index() -> tuple[str, int]:
         
         async function deleteFlight(event) {{
             event.preventDefault();
-            const flightNumber = document.getElementById('delete_flight_number').value;
+            const flight_number = document.getElementById('delete_flight_number').value;
             
-            if (!confirm(`Are you sure you want to delete flight ${{flightNumber}}?`)) {{
+            if (!confirm(`Are you sure you want to delete flight ${{flight_number}}?`)) {{
                 return;
             }}
             
-            const response = await fetch(`/api/flights/$${{flightNumber}}`, {{
+            const response = await fetch(`/api/flights/$${{flight_number}}`, {{
                 method: 'DELETE'
             }});
             
